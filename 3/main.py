@@ -46,82 +46,96 @@ def add_input(schema, index_to_check):
         if h_1[2] == "unused":
             for number in h_1[3]:
                 schema[number] = ("0", "0", "USED", [])
+                if len(schema) > 140:
+                    print(len(schema))
+                    print(schema)
+                    print(index_to_check)
+                    print("=====")
+                    raise Exception("ERROR")
+            # print(int(h_1[1]))
             return int(h_1[1])
     return 0
 
 
 def get_sum(schematics):
     sum = 0
+    parts = []
     for line, schema in enumerate(schematics):
+        
         for index, input in enumerate(schema):
+            if len(schema) > 140:
+                print(len(schema))
+            previous_line = None
+            next_line = None
             if input[1] != "special":
                 continue
 
-            print(input)
             # CURRENT LINE
-            sum += add_input(schema, (index - 1))
-            # h_1 = schema[index - 1]
-            # if h_1[2] == "unused":
-            #     sum += int(h_1[1])
-            #     for number in h_1[3]:
-            #         schema[number] = ("0", "0", "USED", [])
+            print(input)
+            print(line)
+            part = add_input(schema, (index - 1))
+            if part > 0:
+                parts.append(part)
+                sum += part
 
-            sum += add_input(schema, (index + 1))
-            # h_2 = schema[index + 1]
-            # if h_2[2] == "unused":
-            #     sum += int(h_2[1])
-            #     for number in h_2[3]:
-            #         schema[number] = ("0", "0", "USED", [])
+            part = add_input(schema, (index + 1))
+            if part > 0:
+                parts.append(part)
+                sum += part
 
             # PREVIOUS LINE
             if line > 0:
                 previous_line = schematics[line - 1]
 
-                sum += add_input(previous_line, (index - 1))
-                # i_1 = previous_line[index - 1]
-                # if i_1[2] == "unused":
-                #     sum += int(i_1[1])
-                #     for number in i_1[3]:
-                #         previous_line[number] = ("0", "0", "USED", [])
+                part = add_input(previous_line, (index - 1))
+                if part > 0:
+                    parts.append(part)
+                    sum += part
 
-                sum += add_input(previous_line, index)
-                # i_2 = previous_line[index]
-                # if i_2[2] == "unused":
-                #     sum += int(i_2[1])
-                #     for number in i_2[3]:
-                #         previous_line[number] = ("0", "0", "USED", [])
+                part = add_input(previous_line, index)
+                if part > 0:
+                    parts.append(part)
+                    sum += part
 
-                sum += add_input(previous_line, (index + 1))
-                # i_3 = previous_line[index + 1]
-                # if i_3[2] == "unused":
-                #     sum += int(i_3[1])
-                #     for number in i_3[3]:
-                #         previous_line[number] = ("0", "0", "USED", [])
+                part = add_input(previous_line, (index + 1))
+                if part > 0:
+                    parts.append(part)
+                    sum += part
 
             # NEXT LINE
             if array_has_index(schematics, (line + 1)):
                 next_line = schematics[line + 1]
 
-                sum += add_input(next_line, (index - 1))
+                part = add_input(next_line, (index - 1))
+                if part > 0:
+                    parts.append(part)
+                    sum += part
                 # j_1 = next_line[index - 1]
                 # if j_1[2] == "unused":
                 #     sum += int(j_1[1])
                 #     for number in j_1[3]:
                 #         next_line[number] = ("0", "0", "USED", [])
 
-                sum += add_input(next_line, index)
+                part = add_input(next_line, index)
+                if part > 0:
+                    parts.append(part)
+                    sum += part
                 # j_2 = next_line[index]
                 # if j_2[2] == "unused":
                 #     sum += int(j_2[1])
                 #     for number in j_2[3]:
                 #         next_line[number] = ("0", "0", "USED", [])
 
-                sum += add_input(next_line, (index + 1))
+                part = add_input(next_line, (index + 1))
+                if part > 0:
+                    parts.append(part)
+                    sum += part
                 # j_3 = next_line[index + 1]
                 # if j_3[2] == "unused":
                 #     sum += int(j_3[1])
                 #     for number in j_3[3]:
                 #         next_line[number] = ("0", "0", "USED", [])
+    print(parts)
     return sum
 
 
